@@ -1,0 +1,15 @@
+[
+  {
+    "name": "${app-name}",
+    "image": "${ui-app-image}",
+    "cpu": ${fargate-cpu},
+    "memory": ${fargate-memory},
+    "networkMode": "awsvpc",
+    "portMappings": [
+      {
+        "containerPort": ${ui-app-port},
+        "hostPort": ${ui-app-port}
+      }
+    ]
+  }
+]
