@@ -20,10 +20,10 @@ variable "ui-app-count" {
 
 variable "ui-fargate-cpu" {
   description = "Instance CPU units to provision"
-  default = "512"
+  default = "1024"
 }
 
 variable "ui-fargate-memory" {
   description = "Instance memory to provision"
-  default = "1024"
+  default = "2048"
 }

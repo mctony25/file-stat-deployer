@@ -15,10 +15,10 @@ variable "api-app-count" {
 
 variable "api-fargate-cpu" {
   description = "Instance CPU units to provision"
-  default = "512"
+  default = "1024"
 }
 
 variable "api-fargate-memory" {
   description = "Instance memory to provision"
-  default = "1024"
+  default = "2048"
 }
