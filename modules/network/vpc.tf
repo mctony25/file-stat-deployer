@@ -5,6 +5,8 @@ data "aws_availability_zones" "aws-az" {
 resource "aws_vpc" "main-vpc" {
   cidr_block = var.main-vpc-cidr
   instance_tenancy = "default"
+  enable_dns_hostnames = true
+  enable_dns_support = true
 
   tags = {
     Name = "${var.environment-context}-main-vpc"
@@ -20,12 +22,12 @@ resource "aws_subnet" "main-subnet" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${var.environment-context}-main-subnet"
+    Name = "${var.environment-context}-main-subnet-${count.index + 1}"
     Environment = var.environment-context
   }
 }
 
-resource "aws_internet_gateway" "aws-igw" {
+resource "aws_internet_gateway" "main-igw" {
   vpc_id = aws_vpc.main-vpc.id
   tags = {
     Name        = "${var.app-name}-igw"
@@ -33,11 +35,11 @@ resource "aws_internet_gateway" "aws-igw" {
   }
 }
 
-resource "aws_route_table" "aws-route-table" {
+resource "aws_route_table" "main-route-table" {
   vpc_id = aws_vpc.main-vpc.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.aws-igw.id
+    gateway_id = aws_internet_gateway.main-igw.id
   }
   tags = {
     Name        = "${var.app-name}-route-table"
@@ -45,7 +47,7 @@ resource "aws_route_table" "aws-route-table" {
   }
 }
 
-resource "aws_main_route_table_association" "aws-route-table-association" {
+resource "aws_main_route_table_association" "main-route-table-association" {
   vpc_id         = aws_vpc.main-vpc.id
-  route_table_id = aws_route_table.aws-route-table.id
+  route_table_id = aws_route_table.main-route-table.id
 }

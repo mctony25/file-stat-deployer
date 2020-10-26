@@ -6,7 +6,6 @@ resource "aws_security_group" "ecs-cluster-security-group" {
   tags = {
     Name = "${var.app-name}-ecs-cluster-security-group-${var.environment-context}"
     Environment = var.environment-context
-    Role = "ecs-cluster"
   }
 
   ingress {
@@ -14,15 +13,15 @@ resource "aws_security_group" "ecs-cluster-security-group" {
     from_port = 80
     to_port = 80
     protocol = "tcp"
-    cidr_blocks = [var.main-vpc-cidr]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    description = "Allow inbound http traffic from VPC on port 5051"
-    from_port = 5051
-    to_port = 5051
+    description = "Allow inbound http traffic from VPC on port 5150"
+    from_port = var.api-open-port
+    to_port = var.api-open-port
     protocol = "tcp"
-    cidr_blocks = [var.main-vpc-cidr]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
@@ -30,7 +29,7 @@ resource "aws_security_group" "ecs-cluster-security-group" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = [var.main-vpc-cidr]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {

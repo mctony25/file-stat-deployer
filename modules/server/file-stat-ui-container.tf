@@ -2,12 +2,14 @@ data "template_file" "ui_app" {
   template = file("../modules/server/template_files/file-stat-ui.json")
 
   vars = {
-    app-name = var.ui_app_name
-    ui-app-image = var.ui_app_image
-    ui-app-port = var.ui_app_port
-    fargate-cpu = var.ui_fargate_cpu
-    fargate-memory = var.ui_fargate_memory
+    app-name = var.ui-app-name
+    ui-app-image = var.ui-app-image
+    ui-app-port = var.ui-app-port
+    fargate-cpu = var.ui-fargate-cpu
+    fargate-memory = var.ui-fargate-memory
     aws-region = var.default-region
+    api-host = aws_alb.api-main-lb.dns_name
+    api-port = var.api-open-port
   }
 }
 
@@ -16,21 +18,21 @@ resource "aws_ecs_task_definition" "ui_app" {
   execution_role_arn = aws_iam_role.ecs-task-role.arn
   network_mode = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu = var.ui_fargate_cpu
-  memory = var.ui_fargate_memory
+  cpu = var.ui-fargate-cpu
+  memory = var.ui-fargate-memory
   container_definitions = data.template_file.ui_app.rendered
 
   tags = {
-    Name = "${var.ui_app_name}-task-definition"
+    Name = "${var.ui-app-name}-task-definition"
     Environment = var.environment-context
   }
 }
 
 resource "aws_ecs_service" "ui_app" {
-  name = var.ui_app_name
+  name = var.ui-app-name
   cluster = aws_ecs_cluster.aws-ecs.id
   task_definition = aws_ecs_task_definition.ui_app.arn
-  desired_count = var.ui_app_count
+  desired_count = var.ui-app-count
   launch_type = "FARGATE"
 
   network_configuration {
@@ -41,14 +43,14 @@ resource "aws_ecs_service" "ui_app" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.ui-app-tg.id
-    container_name   = var.ui_app_name
-    container_port   = var.ui_app_port
+    container_name   = var.ui-app-name
+    container_port   = var.ui-app-port
   }
 
-  depends_on = [aws_alb_listener.front_end]
+  depends_on = [aws_alb_listener.ui-lb-listener]
 
   tags = {
-    Name = "${var.ui_app_name}-ecs-service"
+    Name = "${var.ui-app-name}-ecs-service"
     Environment = var.environment-context
   }
 }

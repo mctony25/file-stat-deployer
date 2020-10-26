@@ -10,6 +10,16 @@
         "containerPort": ${ui-app-port},
         "hostPort": ${ui-app-port}
       }
+    ],
+    "environment": [
+      {
+        "name": "API_HOSTNAME",
+        "value": "${api-host}"
+      },
+      {
+        "name": "API_PORT",
+        "value": "${api-port}"
+      }
     ]
   }
 ]

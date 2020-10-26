@@ -1,29 +1,29 @@
-variable "ui_app_name" {
+variable "ui-app-name" {
   description = "Name of the App"
   default = "file-stat-ui"
 }
 
-variable "ui_app_image" {
+variable "ui-app-image" {
   description = "Docker image to run in the cluster"
-  default = "docker.io/mctony25/file-stat-ui:1.0.0"
+  default = "docker.io/mctony25/file-stat-ui:latest"
 }
 
-variable "ui_app_port" {
+variable "ui-app-port" {
   description = "The port to expose of the Docker container"
   default = 80
 }
 
-variable "ui_app_count" {
+variable "ui-app-count" {
   description = "Number of containers instances to run"
   default = 1
 }
 
-variable "ui_fargate_cpu" {
+variable "ui-fargate-cpu" {
   description = "Instance CPU units to provision"
   default = "512"
 }
 
-variable "ui_fargate_memory" {
+variable "ui-fargate-memory" {
   description = "Instance memory to provision"
   default = "1024"
 }

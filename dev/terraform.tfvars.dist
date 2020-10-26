@@ -1,0 +1,10 @@
+# App variables definition
+app_name = "file-stat"
+environment-name = "dev"
+main-vpc-cidr = "10.0.0.0/16"
+api-open-port = 5150
+
+#AWS auth variables
+aws-access-key = "AKIA27PGZYYEXAMPLE"
+aws-secret-key = "pRmhQKJnA+StT2aSeTn7qWExAMple"
+default-region = "us-east-1"
